@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="client.js"></script>
+    </head>
+    <body>
+        <div id="login">
+            <form id="loginForm">
+                <p>Enter ur code</p><br>
+                <input type="text" id="loginInput" placeholder="Ur code">
+                <br><p id="loginResult" style="display: none;">Login successfull</p><br>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+        <div id="main" style="display: none;">
+            <h1>Notepad (Vulnerable to CSRF)</h1><br>
+            <textarea id="textMain">
+            </textarea><br>
+            <p id="saveResult" style="display: none;">Saved successfully</p>
+            <button id="saveBtn">Save</button>
+        </div>
+    </body>
+</html>
