@@ -121,7 +121,7 @@ $(() => {
     saveBtn.on("click", async () => {
         let csrfToken = await getSessionToken(loginData.code)
         console.log(`CSRF: ${csrfToken}`)
-        let saveReq = await fetch("/save", {method: "POST", headers: {code: loginData.code, "Content-Type": "application/json", "x-csrf-token": csrfToken}, body: JSON.stringify({data: textboxMain})})
+        let saveReq = await fetch("/save", {method: "POST", headers: {"Content-Type": "application/json", "x-csrf-token": csrfToken}, body: JSON.stringify({data: textboxMain.val()})})
         let res = await saveReq.json()
 
         if (res.success){
