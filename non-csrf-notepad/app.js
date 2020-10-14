@@ -8,13 +8,16 @@ let port = 80
 //static
 let express = require("express")
 let bodyParser = require("body-parser")
+let cookieParser = require("cookie-parser")
 
 //instances
 let app = express()
 let jsonParser = bodyParser.json()
+let cookieParserMid = cookieParser()
 
 //express middleware
 app.use(jsonParser)
+app.use(cookieParserMid)
 
 //express logic
 
@@ -23,7 +26,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/myfile", (req, res) => {
-    let code = req.get("code")
+    let code = req.cookies.code
 
     if (code){
         fs.readFile(`${__dirname}/datastore/${code}`, "utf8", (er, data) => {
@@ -48,6 +51,7 @@ app.post("/login", (req, res) => {
             if (er){
                 fs.writeFile(`${__dirname}/datastore/${code}`, `${code}'s file`, er => {
                     if (!er){
+                        res.cookie("code", code)
                         res.json({success: true, userFacingMsg: "Account created, logging in now.", code: code})
                     }
                     else{
@@ -56,6 +60,7 @@ app.post("/login", (req, res) => {
                 })
             }
             else{
+                res.cookie("code", code)
                 res.json({success: true, code: code})
             }
         })
@@ -68,7 +73,7 @@ app.post("/login", (req, res) => {
 })
 
 app.post("/save", (req, res) => {
-    let code = req.get("code")
+    let code = req.cookies.code
     let data = req.body.data
 
     if (code && data){

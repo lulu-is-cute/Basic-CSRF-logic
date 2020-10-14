@@ -36,7 +36,7 @@ $(() => {
     }
 
     let startNotepad = async () => {
-        let getFileReq = await fetch("/myfile", {method: "GET", headers: {code: loginData.code}})
+        let getFileReq = await fetch("/myfile", {method: "GET", credentials: "same-origin"})
         let res = await getFileReq.json()
 
         if (res.success){
@@ -99,7 +99,7 @@ $(() => {
     })
 
     saveBtn.on("click", async () => {
-        let saveReq = await fetch("/save", {method: "POST", headers: {code: loginData.code, "Content-Type": "application/json"}, body: JSON.stringify({data: textboxMain})})
+        let saveReq = await fetch("/save", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"}, body: JSON.stringify({data: textboxMain})})
         let res = await saveReq.json()
 
         if (res.success){
