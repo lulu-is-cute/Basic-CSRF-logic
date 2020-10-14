@@ -99,7 +99,7 @@ $(() => {
     })
 
     saveBtn.on("click", async () => {
-        let saveReq = await fetch("/save", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"}, body: JSON.stringify({data: textboxMain})})
+        let saveReq = await fetch("/save", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"}, body: JSON.stringify({data: textboxMain.val()})})
         let res = await saveReq.json()
 
         if (res.success){
