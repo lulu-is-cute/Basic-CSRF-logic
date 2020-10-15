@@ -51,6 +51,12 @@ $(() => {
         loginPage.css("display", "none")
     }
 
+    //auto login with cookie
+    if (document.cookie.indexOf("code") > -1){
+        startNotepad()
+    }
+    //form login
+
     loginForm.on("submit", e => {
         e.preventDefault()
 

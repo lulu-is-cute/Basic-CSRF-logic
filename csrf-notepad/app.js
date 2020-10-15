@@ -8,15 +8,17 @@ let port = 80
 //static
 let express = require("express")
 let bodyParser = require("body-parser")
+let cookieParser = require("cookie-parser")
 let csrf = require("./csrf.js")
-const csrfMod = require("./csrf.js")
 
 //instances
 let app = express()
 let jsonParser = bodyParser.json()
+let reqCookieParser = cookieParser()
 
 //express middleware
 app.use(jsonParser)
+app.use(reqCookieParser)
 
 //express logic
 
@@ -25,7 +27,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/myfile", (req, res) => {
-    let code = req.get("code")
+    let code = req.cookies["code"]
 
     if (code){
         fs.readFile(`${__dirname}/datastore/${code}`, "utf8", (er, data) => {
@@ -43,13 +45,14 @@ app.get("/myfile", (req, res) => {
 })
 
 app.post("/login", (req, res) => {
-    let code = req.body.code
+    let code = req.body["code"]
 
     if (code){
         fs.readFile(`${__dirname}/datastore/${code}`, (er) => {
             if (er){
                 fs.writeFile(`${__dirname}/datastore/${code}`, `${code}'s file`, er => {
                     if (!er){
+                        res.cookie("code", code)
                         res.json({success: true, userFacingMsg: "Account created, logging in now.", code: code})
                     }
                     else{
@@ -58,6 +61,7 @@ app.post("/login", (req, res) => {
                 })
             }
             else{
+                res.cookie("code", code)
                 res.json({success: true, code: code})
             }
         })
@@ -68,7 +72,7 @@ app.post("/login", (req, res) => {
 })
 
 app.get("/get-csrf", (req, res) => {
-    let code = req.get("code")
+    let code = req.cookies["code"]
 
     if (code){
         fs.readFile(`${__dirname}/datastore/${code}`, async (er) => {
@@ -90,7 +94,7 @@ app.get("/get-csrf", (req, res) => {
 })
 
 app.post("/save", async (req, res) => {
-    let code = req.get("code")
+    let code = req.cookies["code"]
     let xsrf = req.get("x-csrf-token")
     let data = req.body.data
 

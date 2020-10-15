@@ -19,14 +19,13 @@ $(() => {
     let getSessionToken = (code) => {
         return new Promise(async (res, rej) => {
             try{
-                let tokenReq = await fetch("/get-csrf", {method: "get", headers: {code: code}})
+                let tokenReq = await fetch("/get-csrf", {method: "get", credentials: "same-origin"})
                 let tokenRes = await tokenReq.json()
-
                 if (tokenRes.success){
                     res(tokenReq.headers.get("x-csrf-token"))
                 }
                 else{
-                    rej(res)
+                    rej(tokenRes)
                 }
             }
             catch(er){
@@ -56,7 +55,7 @@ $(() => {
     }
 
     let startNotepad = async () => {
-        let getFileReq = await fetch("/myfile", {method: "GET", headers: {code: loginData.code}})
+        let getFileReq = await fetch("/myfile", {method: "GET", credentials: "same-origin"})
         let res = await getFileReq.json()
 
         if (res.success){
@@ -70,6 +69,12 @@ $(() => {
         mainPage.css("display", "block")
         loginPage.css("display", "none")
     }
+
+    //auto login with cookie
+    if (document.cookie.indexOf("code") > -1){
+        startNotepad()
+    }
+    //form login
 
     loginForm.on("submit", e => {
         e.preventDefault()
@@ -119,9 +124,9 @@ $(() => {
     })
 
     saveBtn.on("click", async () => {
-        let csrfToken = await getSessionToken(loginData.code)
+        let csrfToken = await getSessionToken()
         console.log(`CSRF: ${csrfToken}`)
-        let saveReq = await fetch("/save", {method: "POST", headers: {"Content-Type": "application/json", "x-csrf-token": csrfToken}, body: JSON.stringify({data: textboxMain.val()})})
+        let saveReq = await fetch("/save", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json", "x-csrf-token": csrfToken}, body: JSON.stringify({data: textboxMain.val()})})
         let res = await saveReq.json()
 
         if (res.success){
