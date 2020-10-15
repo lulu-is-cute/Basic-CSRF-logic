@@ -35,10 +35,6 @@ Now that the local server is running. Visit localhost:80 and login with a random
 Once you have done that then in the notepad part write some stuff. Whatever you want!!
 ```
 
-After you have become a user on your local website it's time for an attack. You will visit a link hosted on glitch which will send a request to your local server pretending to be you with your code. Since the code is stored in cookies other websites will be able to request actions on your accounts with the correct tokens.
+You can then simulate your own attack on each web app, thank you for looking at my repo!
 
-If you chose to ran the vulnerable one or the secure one. You will go back on the localhost website in your browser and see if your data has been changed on the notepad.
-
-Here is the link: [csrftestattacker.glitch.me](https://csrftestattacker.glitch.me/)
-
-# Thank you and kee your websites secure developers!
+# Secure your apps!
