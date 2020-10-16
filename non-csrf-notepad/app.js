@@ -3,7 +3,7 @@
 
 //vars
 let fs = require("fs")
-let port = 80
+let port = process.env.PORT || 3000
 
 //static
 let express = require("express")
