@@ -1,9 +1,10 @@
 
-/*online notepad without csrf protection*/
+/*online notepad with csrf protection*/
 
 //vars
 let fs = require("fs")
 let port = process.env.PORT || 3000
+let credentialsCookieName = "x-cookie-code"
 
 //static
 let express = require("express")
@@ -27,7 +28,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/myfile", (req, res) => {
-    let code = req.cookies["code"]
+    let code = req.cookies[credentialsCookieName]
 
     if (code){
         fs.readFile(`${__dirname}/datastore/${code}`, "utf8", (er, data) => {
@@ -52,7 +53,7 @@ app.post("/login", (req, res) => {
             if (er){
                 fs.writeFile(`${__dirname}/datastore/${code}`, `${code}'s file`, er => {
                     if (!er){
-                        res.cookie("code", code)
+                        res.cookie(credentialsCookieName, code)
                         res.json({success: true, userFacingMsg: "Account created, logging in now.", code: code})
                     }
                     else{
@@ -61,7 +62,7 @@ app.post("/login", (req, res) => {
                 })
             }
             else{
-                res.cookie("code", code)
+                res.cookie(credentialsCookieName, code)
                 res.json({success: true, code: code})
             }
         })
@@ -72,7 +73,7 @@ app.post("/login", (req, res) => {
 })
 
 app.get("/get-csrf", (req, res) => {
-    let code = req.cookies["code"]
+    let code = req.cookies[credentialsCookieName]
 
     if (code){
         fs.readFile(`${__dirname}/datastore/${code}`, async (er) => {
@@ -94,7 +95,7 @@ app.get("/get-csrf", (req, res) => {
 })
 
 app.post("/save", async (req, res) => {
-    let code = req.cookies["code"]
+    let code = req.cookies[credentialsCookieName]
     let xsrf = req.get("x-csrf-token")
     let data = req.body.data
 
