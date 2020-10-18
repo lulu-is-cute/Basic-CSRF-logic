@@ -142,4 +142,4 @@ app.get("/client.js", (req, res) => {
 })
 
 //express start
-app.listen(port, () => console.log(`Server listening on port ${port}`))
+app.listen(port, () => console.log(`Server listening on port ${port} (CSRF PROTECTED VERSION)`))
