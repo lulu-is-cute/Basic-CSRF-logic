@@ -19,6 +19,7 @@ let cookieParserMid = cookieParser()
 //express middleware
 app.use(formDataParser)
 app.use(cookieParserMid)
+app.use(express.static("public"))
 
 //express logic
 
@@ -102,10 +103,6 @@ app.post("/save", (req, res) => {
 
         res.json({success: false, err: 401, fields: fields})
     }
-})
-
-app.get("/client.js", (req, res) => {
-    res.sendFile(`${__dirname}/public/main.js`)
 })
 
 //express start

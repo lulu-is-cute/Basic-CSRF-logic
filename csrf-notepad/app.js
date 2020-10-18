@@ -20,6 +20,7 @@ let reqCookieParser = cookieParser()
 //express middleware
 app.use(formDataParser)
 app.use(reqCookieParser)
+app.use(express.static("public"))
 
 //express logic
 
@@ -137,9 +138,6 @@ app.post("/save", async (req, res) => {
     }
 })
 
-app.get("/client.js", (req, res) => {
-    res.sendFile(`${__dirname}/public/main.js`)
-})
 
 //express start
 app.listen(port, () => console.log(`Server listening on port ${port} (CSRF PROTECTED VERSION)`))
