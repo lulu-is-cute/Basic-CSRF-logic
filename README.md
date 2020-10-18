@@ -37,4 +37,6 @@ Once you have done that then in the notepad part write some stuff. Whatever you 
 
 You can then simulate your own attack on each web app, thank you for looking at my repo!
 
+We have made our own attack simulation that you can run, visit [this repo](https://github.com/lulu-is-cute/csrf_server-attacker/)
+
 # Secure your apps!
