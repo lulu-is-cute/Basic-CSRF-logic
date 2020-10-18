@@ -11,6 +11,7 @@ $(() => {
     let loginResult = $("#loginResult")
     let saveResult = $("#saveResult")
 
+    let credentialsCookieName = "x-cookie-code"
     //SESSION
     var loginData;
 
@@ -52,7 +53,7 @@ $(() => {
     }
 
     //auto login with cookie
-    if (document.cookie.indexOf("code") > -1){
+    if (document.cookie.indexOf(credentialsCookieName) > -1){
         startNotepad()
     }
     //form login
@@ -60,7 +61,7 @@ $(() => {
     loginForm.on("submit", e => {
         e.preventDefault()
 
-        let request = fetch("/login", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({code: loginCodeInput.val()})})
+        let request = fetch("/login", {method: "POST", headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: $.param({code: loginCodeInput.val()})})
         request.then(async data => {
             data = await data.json()
             loginData = data
@@ -105,7 +106,7 @@ $(() => {
     })
 
     saveBtn.on("click", async () => {
-        let saveReq = await fetch("/save", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"}, body: JSON.stringify({data: textboxMain.val()})})
+        let saveReq = await fetch("/save", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: $.param({data: textboxMain.val()})})
         let res = await saveReq.json()
 
         if (res.success){

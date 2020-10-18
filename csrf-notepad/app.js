@@ -14,11 +14,11 @@ let csrf = require("./csrf.js")
 
 //instances
 let app = express()
-let jsonParser = bodyParser.json()
+let formDataParser = bodyParser.urlencoded({extended: true})
 let reqCookieParser = cookieParser()
 
 //express middleware
-app.use(jsonParser)
+app.use(formDataParser)
 app.use(reqCookieParser)
 
 //express logic

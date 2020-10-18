@@ -13,11 +13,11 @@ let cookieParser = require("cookie-parser")
 
 //instances
 let app = express()
-let jsonParser = bodyParser.json()
+let formDataParser = bodyParser.urlencoded({extended: true})
 let cookieParserMid = cookieParser()
 
 //express middleware
-app.use(jsonParser)
+app.use(formDataParser)
 app.use(cookieParserMid)
 
 //express logic
